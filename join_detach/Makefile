@@ -1,22 +1,16 @@
-# Компилятор и флаги
-CC = gcc
-CFLAGS = -Wall -Wextra -pthread
+TARGET = thread-example
+SRCS = diff_vars_thread.c
 
-# Список исходных файлов
-SRCS = task_a.c task_b.c task_c.c task_d.c task_e.c task_f.c
+CC=gcc
+RM=rm
+CFLAGS= -g -Wall
+LIBS=-lpthread
+INCLUDE_DIR="."
 
-# Получаем имена исполняемых файлов (заменяем .c на пустоту)
-TARGETS = $(SRCS:.c=)
+all: ${TARGET}
 
-# Цель по умолчанию — собираем все программы
-all: $(TARGETS)
+${TARGET}: ${SRCS}
+	${CC} ${CFLAGS} -I${INCLUDE_DIR} ${SRCS} ${LIBS} -o ${TARGET}
 
-# Правило для сборки каждого исполняемого файла из соответствующего .c файла
-%: %.c
-	$(CC) $(CFLAGS) $< -o $@
-
-# Очистка собранных бинарников
 clean:
-	rm -f $(TARGETS)
-
-.PHONY: all clean
+	${RM} -f *.o ${TARGET}
